@@ -3,14 +3,14 @@ package org.usac.proyectosa.controllers;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.usac.proyectosa.models.Departamento;
+import org.usac.proyectosa.models.CentroVotacion;
 
 /**
  *
  * @author esvux
  */
 @Stateless
-public class DepartamentoFacade extends AbstractFacade<Departamento> {
+public class CentroVotacionFacade extends AbstractFacade<CentroVotacion> {
 
     @PersistenceContext(unitName = "elecciones_pu")
     private EntityManager em;
@@ -20,8 +20,8 @@ public class DepartamentoFacade extends AbstractFacade<Departamento> {
         return em;
     }
 
-    public DepartamentoFacade() {
-        super(Departamento.class);
+    public CentroVotacionFacade() {
+        super(CentroVotacion.class);
     }
     
 }

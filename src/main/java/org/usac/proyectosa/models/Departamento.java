@@ -1,7 +1,6 @@
 package org.usac.proyectosa.models;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
