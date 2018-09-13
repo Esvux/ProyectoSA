@@ -16,7 +16,7 @@ import org.usac.proyectosa.models.CentroVotacion;
  *
  * @author esvux
  */
-@Path("centros")
+@Path("centros-votacion")
 @RequestScoped
 public class CentrosVotacionEndpoint {
 

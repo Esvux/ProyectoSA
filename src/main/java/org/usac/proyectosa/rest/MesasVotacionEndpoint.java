@@ -16,7 +16,7 @@ import org.usac.proyectosa.models.MesaVotacion;
  *
  * @author esvux
  */
-@Path("mesas")
+@Path("mesas-votacion")
 @RequestScoped
 public class MesasVotacionEndpoint {
 
