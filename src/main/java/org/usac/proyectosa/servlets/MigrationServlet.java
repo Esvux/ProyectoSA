@@ -38,7 +38,7 @@ public class MigrationServlet extends HttpServlet {
             new Municipio(207, "Sanarate", depto),
             new Municipio(208, "San Antonio la Paz", depto)
         });
-        departamentos.create(depto);
+        //departamentos.create(depto);
         try(PrintWriter out = response.getWriter()) {
             out.println("Departamento creado correctamente");
         }

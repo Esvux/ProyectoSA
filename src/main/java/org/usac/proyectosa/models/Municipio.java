@@ -46,6 +46,11 @@ public class Municipio implements Serializable {
     public Municipio() {
     }
 
+    public Municipio(Integer idMunicipio, String nombre) {
+        this.idMunicipio = idMunicipio;
+        this.nombre = nombre;
+    }
+    
     public Municipio(Integer idMunicipio, String nombre, Departamento depto) {
         this.idMunicipio = idMunicipio;
         this.nombre = nombre;

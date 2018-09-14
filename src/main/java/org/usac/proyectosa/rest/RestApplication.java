@@ -15,8 +15,6 @@ import org.usac.proyectosa.utils.JacksonConfig;
 @ApplicationPath("rest")
 public class RestApplication extends Application {
 
-    
-    
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<>();
@@ -24,9 +22,10 @@ public class RestApplication extends Application {
         resources.add(MesasVotacionEndpoint.class);
         resources.add(ElectorEndpoint.class);
         resources.add(DepartamentoEndpoint.class);
+        resources.add(MunicipioEndpoint.class);
         resources.add(JacksonFeature.class);
         resources.add(JacksonConfig.class);
         return resources;
     }    
-    
+
 }
