@@ -1,5 +1,8 @@
 package org.usac.proyectosa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.usac.proyectosa.rest.View;
 
 /**
  *
@@ -27,14 +31,17 @@ public class Departamento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_departamento")
+    @JsonView(View.Search.class)
     private Integer idDepartamento;
 
     @NotNull
     @Size(max = 150)
     @Column
+    @JsonView(View.Search.class)
     private String nombre;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento", fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "municipio")
     private Set<Municipio> municipios;
 
     public Departamento() {

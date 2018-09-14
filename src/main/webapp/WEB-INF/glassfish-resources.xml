@@ -32,7 +32,7 @@
             steady-pool-size="8" 
             validate-atmost-once-period-in-seconds="0" 
             wrap-jdbc-objects="true">
-        <property name="URL" value="jdbc:mysql://35.227.17.127:3306/elecciones"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/elecciones"/>
         <property name="User" value="root"/>
         <property name="Password" value="secret"/>
         <property name="DatabaseName" value="elecciones"/>

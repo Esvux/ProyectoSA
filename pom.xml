@@ -7,7 +7,7 @@
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>ProyectoSA</name>
+    <name>elecciones</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -33,6 +33,7 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Provides JacksonFeature -->
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
@@ -50,8 +51,20 @@
             <version>2.7.4</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Provides JAX-RS swagger support -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jersey2-jaxrs</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
+            <version>3.0.18</version>
+        </dependency>
     </dependencies>
     <build>
+        <finalName>elecciones</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

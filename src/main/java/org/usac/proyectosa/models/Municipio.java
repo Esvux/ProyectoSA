@@ -1,5 +1,6 @@
 package org.usac.proyectosa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -39,6 +40,7 @@ public class Municipio implements Serializable {
 
     @JoinColumn(name = "id_departamento", referencedColumnName = "id_departamento")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonBackReference(value = "municipio")
     private Departamento departamento;
 
     public Municipio() {
