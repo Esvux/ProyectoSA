@@ -23,7 +23,7 @@ public class RestApplication extends Application {
         //Endpoints
         resources.add(CentroVotacionEndpoint.class);
         resources.add(MesaVotacionEndpoint.class);
-        resources.add(_ElectorEndpoint.class);
+        resources.add(ElectorEndpoint.class);
         resources.add(DepartamentoEndpoint.class);
         resources.add(MunicipioEndpoint.class);
 
