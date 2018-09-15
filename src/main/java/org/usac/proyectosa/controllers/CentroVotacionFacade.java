@@ -39,4 +39,5 @@ public class CentroVotacionFacade extends AbstractFacade<CentroVotacion> {
 
         return query.fetch();
     }
+
 }
