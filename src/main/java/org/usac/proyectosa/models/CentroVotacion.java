@@ -50,6 +50,16 @@ public class CentroVotacion implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "centroVotacion", fetch = FetchType.LAZY)
     private Set<MesaVotacion> mesasVotacion;
 
+    public CentroVotacion() {
+    }
+
+    public CentroVotacion(Integer idCentro, String nombre, String direccion, String extraDireccion) {
+        this.idCentro = idCentro;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.extraDireccion = extraDireccion;
+    }
+
     public Integer getIdCentro() {
         return idCentro;
     }

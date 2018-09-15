@@ -1,7 +1,8 @@
 package org.usac.proyectosa.controllers;
 
-import java.util.List;
 import javax.persistence.EntityManager;
+import javax.ws.rs.core.Response;
+import org.usac.proyectosa.rest.filters.SAException;
 
 /**
  *
@@ -15,45 +16,28 @@ public abstract class AbstractFacade<T> {
         this.entityClass = entityClass;
     }
 
-    protected abstract EntityManager getEntityManager();
-
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
+    public void edit(Integer id, T entity) throws SAException {
+        T oldEntity = find(id);
+        if(oldEntity == null)
+            throw new SAException("Error al editar, el recurso no existe", Response.Status.NOT_FOUND);
         getEntityManager().merge(entity);
     }
 
-    public void remove(T entity) {
+    public void remove(Integer id) throws SAException {
+        T entity = find(id);
+        if(entity == null)
+            throw new SAException("Imposible eliminar, el recurso no existe", Response.Status.NOT_FOUND);
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
-
-    public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
-    }
-
-    public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0] + 1);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
-    }
-
-    public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-    }
     
+    protected abstract EntityManager getEntityManager();
+
 }
