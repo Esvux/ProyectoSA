@@ -1,6 +1,8 @@
 package org.usac.proyectosa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -16,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.usac.proyectosa.rest.View;
 
 /**
  *
@@ -28,45 +31,55 @@ public class Elector implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_elector")
+    @JsonView(View.Search.class)
     private Integer idElector;
     
     @NotNull
     @Size(max = 20)
     @Column
+    @JsonView(View.Search.class)
     private String dpi;
     
     @NotNull
     @Size(max = 20)
     @Column(name = "num_padron")
+    @JsonView(View.Search.class)
     private String numPadron;
     
     @NotNull
     @Size(max = 150)
     @Column
+    @JsonView(View.Search.class)
     private String nombres;
 
     @NotNull
     @Size(max = 150)
     @Column
+    @JsonView(View.Search.class)
     private String apellidos;
 
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_nacimiento")
+    @JsonView(View.Search.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaNacimiento;
     
     @NotNull
     @Size(min = 1, max = 1)
     @Column
+    @JsonView(View.Search.class)
     private String genero;
     
     @NotNull
     @Size(max = 150)
     @Column
+    @JsonView(View.Search.class)
     private String direccion;
     
     @Size(max = 150)
     @Column(name = "extra_direccion")
+    @JsonView(View.Search.class)
     private String extraDireccion;
     
     @JoinColumn(name = "id_mesa", referencedColumnName = "id_mesa")

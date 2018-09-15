@@ -34,8 +34,8 @@ public class ElectorEndpoint {
     ElectorFacade electorService;
     
     @POST
-    public Response create(Elector elector) {
-        electorService.create(elector);
+    public Response create(Elector elector) throws SAException {
+        electorService.createWithValidations(elector);
         return Response.ok().build();
     }
 
