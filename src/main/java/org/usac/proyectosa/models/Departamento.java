@@ -1,11 +1,8 @@
 package org.usac.proyectosa.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,7 +38,7 @@ public class Departamento implements Serializable {
     private String nombre;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento", fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "municipio")
+    @JsonManagedReference("departamento-municipios")
     private Set<Municipio> municipios;
 
     public Integer getIdDepartamento() {

@@ -1,5 +1,6 @@
 package org.usac.proyectosa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -70,6 +71,7 @@ public class Elector implements Serializable {
     
     @JoinColumn(name = "id_mesa", referencedColumnName = "id_mesa")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonBackReference("mesa-electores")
     private MesaVotacion mesa;
 
     public Integer getIdElector() {

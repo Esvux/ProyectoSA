@@ -1,5 +1,6 @@
 package org.usac.proyectosa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,10 +27,12 @@ public class Voto implements Serializable {
     
     @JoinColumn(name = "id_mesa", referencedColumnName = "id_mesa")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonBackReference("mesa-votos")
     private MesaVotacion mesa;
     
     @JoinColumn(name = "id_partido", referencedColumnName = "id_partido")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonBackReference("partido-votos")
     private Partido partido;
 
     public Integer getIdVoto() {

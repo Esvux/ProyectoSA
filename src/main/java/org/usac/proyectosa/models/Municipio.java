@@ -41,12 +41,12 @@ public class Municipio implements Serializable {
     private String nombre;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio", fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "centro")
+    @JsonManagedReference("municipio-centros")
     private Set<CentroVotacion> centrosVotacion;
 
     @JoinColumn(name = "id_departamento", referencedColumnName = "id_departamento")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JsonBackReference(value = "municipio")
+    @JsonBackReference("departamento-municipios")
     private Departamento departamento;
 
     public Integer getIdMunicipio() {

@@ -1,5 +1,6 @@
 package org.usac.proyectosa.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -38,6 +39,7 @@ public class Partido implements Serializable {
     private String nombreCandidato;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido", fetch = FetchType.LAZY)
+    @JsonManagedReference("partido-votos")
     private Set<Voto> votos;
 
     public Integer getIdPartido() {

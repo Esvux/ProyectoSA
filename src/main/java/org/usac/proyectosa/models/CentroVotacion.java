@@ -53,11 +53,11 @@ public class CentroVotacion implements Serializable {
     
     @JoinColumn(name = "id_municipio", referencedColumnName = "id_municipio")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JsonBackReference(value = "centro")
+    @JsonBackReference("municipio-centros")
     private Municipio municipio;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "centroVotacion", fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "mesa")
+    @JsonManagedReference("centro-mesas")
     private Set<MesaVotacion> mesasVotacion;
 
     public Integer getIdCentro() {

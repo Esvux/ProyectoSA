@@ -1,6 +1,7 @@
 package org.usac.proyectosa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -42,14 +43,16 @@ public class MesaVotacion implements Serializable {
     private int cantBlancos;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mesa", fetch = FetchType.LAZY)
+    @JsonManagedReference("mesa-votos")
     private Set<Voto> votos;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mesa", fetch = FetchType.LAZY)
+    @JsonManagedReference("mesa-electores")
     private Set<Elector> electores;
     
     @JoinColumn(name = "id_centro", referencedColumnName = "id_centro")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JsonBackReference(value = "mesa")
+    @JsonBackReference("centro-mesas")
     private CentroVotacion centroVotacion;
 
     public Integer getIdMesa() {
