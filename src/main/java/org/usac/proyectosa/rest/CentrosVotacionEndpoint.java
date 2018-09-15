@@ -32,28 +32,38 @@ public class CentrosVotacionEndpoint {
     @Inject
     CentroVotacionFacade centroVotacionService;
 
-    @GET
-    public Response listAll(@QueryParam("depto") Integer deptoId, @QueryParam("muni") Integer muniId) {
-        List<CentroVotacion> centros = centroVotacionService.findAll(deptoId, muniId);
-        return Response.ok(centros).build();
-    }
-
     @POST
     public Response create(CentroVotacion centro) {
         centroVotacionService.create(centro);
         return Response.ok().build();
     }
 
+    @GET
+    public Response listAll(@QueryParam("muniId") Integer muniId) {
+        List<CentroVotacion> centros = centroVotacionService.findAll(muniId);
+        return Response.ok(centros).build();
+    }
+
+    @GET
+    @Path("/{id:[0-9]+}")
+    public Response findById(@PathParam("id") Integer centroId)
+            throws SAException {
+        CentroVotacion centro = centroVotacionService.findById(centroId);
+        return Response.ok(centro).build();
+    }
+
     @PUT
     @Path("/{id:[0-9]+}")
-    public Response edit(@PathParam("id") Integer idCentro, CentroVotacion centro) throws SAException {
+    public Response edit(@PathParam("id") Integer idCentro, CentroVotacion centro)
+            throws SAException {
         centroVotacionService.edit(idCentro, centro);
         return Response.ok().build();
     }
-    
+
     @DELETE
     @Path("/{id:[0-9]+}")
-    public Response delete(@PathParam("id") Integer idCentro) throws SAException {
+    public Response delete(@PathParam("id") Integer idCentro)
+            throws SAException {
         centroVotacionService.remove(idCentro);
         return Response.ok().build();
     }

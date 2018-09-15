@@ -1,6 +1,7 @@
 package org.usac.proyectosa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.usac.proyectosa.rest.View;
 
 /**
  *
@@ -28,11 +30,13 @@ public class Municipio implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_municipio")
+    @JsonView(View.Search.class)
     private Integer idMunicipio;
 
     @NotNull
     @Size(max = 150)
     @Column(name = "nombre")
+    @JsonView(View.Search.class)
     private String nombre;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio", fetch = FetchType.LAZY)
@@ -42,20 +46,6 @@ public class Municipio implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JsonBackReference(value = "municipio")
     private Departamento departamento;
-
-    public Municipio() {
-    }
-
-    public Municipio(Integer idMunicipio, String nombre) {
-        this.idMunicipio = idMunicipio;
-        this.nombre = nombre;
-    }
-    
-    public Municipio(Integer idMunicipio, String nombre, Departamento depto) {
-        this.idMunicipio = idMunicipio;
-        this.nombre = nombre;
-        this.departamento = depto;
-    }
 
     public Integer getIdMunicipio() {
         return idMunicipio;

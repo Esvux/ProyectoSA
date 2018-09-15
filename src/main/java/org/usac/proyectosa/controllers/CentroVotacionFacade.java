@@ -1,6 +1,5 @@
 package org.usac.proyectosa.controllers;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -29,24 +28,12 @@ public class CentroVotacionFacade extends AbstractFacade<CentroVotacion> {
         return em;
     }
 
-    public List<CentroVotacion> findAll(Integer deptoId, Integer muniId) {
+    public List<CentroVotacion> findAll(Integer muniId) {
         QCentroVotacion _centro = QCentroVotacion.centroVotacion;
         JPAQueryFactory factory = new JPAQueryFactory(em);
-        JPAQuery<CentroVotacion> query = factory.select(
-                Projections.constructor(
-                        CentroVotacion.class,
-                        _centro.idCentro,
-                        _centro.nombre,
-                        _centro.direccion,
-                        _centro.extraDireccion
-                )
-        ).from(_centro);
+        JPAQuery<CentroVotacion> query = factory.selectFrom(_centro);
 
-        if (deptoId != null) {
-            // Filter by depto
-            query.where(_centro.municipio.departamento.idDepartamento.eq(deptoId));
-        } else if (muniId != null) {
-            // Filter by muni
+        if (muniId != null) {
             query.where(_centro.municipio.idMunicipio.eq(muniId));
         }
 

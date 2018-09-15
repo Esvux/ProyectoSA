@@ -1,5 +1,6 @@
 package org.usac.proyectosa.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -27,6 +28,7 @@ public class DepartamentoEndpoint {
     DepartamentoFacade departamentoService;
 
     @GET
+    @JsonView(View.Search.class)
     public Response listAll() {
         List<Departamento> departamentos = departamentoService.findAll();
         return Response.ok(departamentos).build();

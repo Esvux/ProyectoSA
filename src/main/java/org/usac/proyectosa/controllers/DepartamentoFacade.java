@@ -1,6 +1,5 @@
 package org.usac.proyectosa.controllers;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -23,15 +22,7 @@ public class DepartamentoFacade {
     public List<Departamento> findAll() {
         QDepartamento _depto = QDepartamento.departamento;        
         JPAQueryFactory factory = new JPAQueryFactory(em);
-        JPAQuery<Departamento> generalQuery = factory
-            .select(
-                Projections.constructor(
-                    Departamento.class,
-                    _depto.idDepartamento,
-                    _depto.nombre
-                )
-            ).from(_depto);
-
+        JPAQuery<Departamento> generalQuery = factory.selectFrom(_depto);
         return generalQuery.fetch();
     }
 

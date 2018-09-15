@@ -44,18 +44,6 @@ public class Departamento implements Serializable {
     @JsonManagedReference(value = "municipio")
     private Set<Municipio> municipios;
 
-    public Departamento() {
-    }
-
-    public Departamento(Integer idDepartamento) {
-        this.idDepartamento = idDepartamento;
-    }
-
-    public Departamento(Integer idDepartamento, String nombre) {
-        this.idDepartamento = idDepartamento;
-        this.nombre = nombre;
-    }
-
     public Integer getIdDepartamento() {
         return idDepartamento;
     }

@@ -34,8 +34,16 @@ public abstract class AbstractFacade<T> {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    private T find(Integer id) {
+        T entity = getEntityManager().find(entityClass, id);
+        return entity;
+    }
+
+    public T findById(Integer id) throws SAException {
+        T entity = getEntityManager().find(entityClass, id);
+        if(entity == null)
+            throw new SAException("El recurso no existe");
+        return entity;
     }
     
     protected abstract EntityManager getEntityManager();
