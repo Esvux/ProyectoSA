@@ -21,7 +21,7 @@ public class RestApplication extends Application {
         Set<Class<?>> resources = new HashSet<>();
 
         //Endpoints
-        resources.add(CentrosVotacionEndpoint.class);
+        resources.add(CentroVotacionEndpoint.class);
         resources.add(MesasVotacionEndpoint.class);
         resources.add(ElectorEndpoint.class);
         resources.add(DepartamentoEndpoint.class);

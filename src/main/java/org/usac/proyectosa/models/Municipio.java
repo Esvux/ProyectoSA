@@ -1,6 +1,7 @@
 package org.usac.proyectosa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.Set;
@@ -40,6 +41,7 @@ public class Municipio implements Serializable {
     private String nombre;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "municipio", fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "centro")
     private Set<CentroVotacion> centrosVotacion;
 
     @JoinColumn(name = "id_departamento", referencedColumnName = "id_departamento")

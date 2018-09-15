@@ -1,5 +1,6 @@
 package org.usac.proyectosa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -48,6 +49,7 @@ public class MesaVotacion implements Serializable {
     
     @JoinColumn(name = "id_centro", referencedColumnName = "id_centro")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonBackReference(value = "mesa")
     private CentroVotacion centroVotacion;
 
     public Integer getIdMesa() {

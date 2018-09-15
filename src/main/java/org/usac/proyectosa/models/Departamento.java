@@ -67,10 +67,5 @@ public class Departamento implements Serializable {
     public void setMunicipios(Set<Municipio> municipios) {
         this.municipios = municipios;
     }
-    
-    public void setMunicipios(Municipio[] municipios) {
-        this.municipios = new HashSet<>();
-        Collections.addAll(this.municipios, municipios);
-    }
 
 }

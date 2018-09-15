@@ -1,5 +1,6 @@
 package org.usac.proyectosa.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -27,7 +28,7 @@ import org.usac.proyectosa.rest.filters.SAException;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CentrosVotacionEndpoint {
+public class CentroVotacionEndpoint {
 
     @Inject
     CentroVotacionFacade centroVotacionService;
@@ -39,6 +40,7 @@ public class CentrosVotacionEndpoint {
     }
 
     @GET
+    @JsonView(View.Search.class)
     public Response listAll(@QueryParam("muniId") Integer muniId) {
         List<CentroVotacion> centros = centroVotacionService.findAll(muniId);
         return Response.ok(centros).build();
