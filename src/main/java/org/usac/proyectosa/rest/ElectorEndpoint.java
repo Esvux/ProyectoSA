@@ -41,7 +41,7 @@ public class ElectorEndpoint {
 
     @GET
     @JsonView(View.Search.class)
-    public Response listAll(@QueryParam("mesaId") Integer idMesa) {
+    public Response listAll(@QueryParam("mesa") Integer idMesa) {
         List<Elector> electores = electorService.findAll(idMesa);
         return Response.ok(electores).build();
     }

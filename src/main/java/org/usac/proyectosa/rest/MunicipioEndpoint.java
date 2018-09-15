@@ -32,15 +32,15 @@ public class MunicipioEndpoint {
 
     @GET
     @JsonView(View.Search.class)
-    public Response listAll(@QueryParam("deptoId") Integer deptoId ) {
-        List<Municipio> municipios = municipioService.findAll(deptoId);
+    public Response listAll(@QueryParam("departamento") Integer idDepto ) {
+        List<Municipio> municipios = municipioService.findAll(idDepto);
         return Response.ok(municipios).build();
     }
 
     @GET
     @Path("/{id:[0-9][0-9]*}")
-    public Response findById(@PathParam("id") final Integer muniId) throws SAException {
-        Municipio municipio = municipioService.findById(muniId);
+    public Response findById(@PathParam("id") final Integer idMuni) throws SAException {
+        Municipio municipio = municipioService.findById(idMuni);
         return Response.ok(municipio).build();
     }   
     

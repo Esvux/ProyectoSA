@@ -41,16 +41,16 @@ public class CentroVotacionEndpoint {
 
     @GET
     @JsonView(View.Search.class)
-    public Response listAll(@QueryParam("muniId") Integer muniId) {
-        List<CentroVotacion> centros = centroVotacionService.findAll(muniId);
+    public Response listAll(@QueryParam("municipio") Integer idMuni) {
+        List<CentroVotacion> centros = centroVotacionService.findAll(idMuni);
         return Response.ok(centros).build();
     }
 
     @GET
     @Path("/{id:[0-9]+}")
-    public Response findById(@PathParam("id") Integer centroId)
+    public Response findById(@PathParam("id") Integer idCentro)
             throws SAException {
-        CentroVotacion centro = centroVotacionService.findById(centroId);
+        CentroVotacion centro = centroVotacionService.findById(idCentro);
         return Response.ok(centro).build();
     }
 

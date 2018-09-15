@@ -2,6 +2,7 @@ package org.usac.proyectosa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import org.usac.proyectosa.rest.View;
 
 /**
  *
@@ -28,18 +30,22 @@ public class MesaVotacion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_mesa")
+    @JsonView(View.Search.class)
     private Integer idMesa;
     
     @NotNull
     @Column(name = "num_mesa")
+    @JsonView(View.Search.class)
     private int numMesa;
     
     @NotNull
     @Column(name = "cant_nulos")
+    @JsonView(View.Search.class)
     private int cantNulos;
     
     @NotNull
     @Column(name = "cant_blancos")
+    @JsonView(View.Search.class)
     private int cantBlancos;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mesa", fetch = FetchType.LAZY)

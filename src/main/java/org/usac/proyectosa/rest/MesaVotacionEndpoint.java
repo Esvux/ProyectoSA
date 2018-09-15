@@ -41,16 +41,16 @@ public class MesaVotacionEndpoint {
 
     @GET
     @JsonView(View.Search.class)
-    public Response listAll(@QueryParam("mesaId") Integer mesaId) {
-        List<MesaVotacion> mesas = mesaVotacionService.findAll(mesaId);
+    public Response listAll(@QueryParam("centro") Integer idCentro) {
+        List<MesaVotacion> mesas = mesaVotacionService.findAll(idCentro);
         return Response.ok(mesas).build();
     }
 
     @GET
     @Path("/{id:[0-9]+}")
-    public Response findById(@PathParam("id") Integer mesaId)
+    public Response findById(@PathParam("id") Integer idMesa)
             throws SAException {
-        MesaVotacion mesa = mesaVotacionService.findById(mesaId);
+        MesaVotacion mesa = mesaVotacionService.findById(idMesa);
         return Response.ok(mesa).build();
     }
 
