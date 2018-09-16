@@ -2,13 +2,12 @@ package org.usac.proyectosa.controllers;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.Response;
 import org.usac.proyectosa.models.Elector;
 import org.usac.proyectosa.models.QElector;
 import org.usac.proyectosa.rest.filters.SAException;
@@ -32,23 +31,6 @@ public class ElectorFacade extends AbstractFacade<Elector> {
         super(Elector.class);
     }
 
-    public void createWithValidations(Elector entity) throws SAException {
-        QElector _elector = QElector.elector;
-        JPAQueryFactory factory = new JPAQueryFactory(em);
-        
-        long countDPI = factory.selectFrom(_elector).where(_elector.dpi.eq(entity.getDpi().trim())).fetchCount();
-        if(countDPI > 0) {
-            throw new SAException("El DPI ya existe", Response.Status.BAD_REQUEST);
-        }
-
-        Instant birthDay = Instant.ofEpochMilli(entity.getFechaNacimiento().getTime());
-        Instant limitDate = Instant.now().minus(18, ChronoUnit.YEARS);
-        if(birthDay.isAfter(limitDate)) {
-            throw new SAException("El elector debe ser mayor de edad", Response.Status.BAD_REQUEST);
-        }
-        this.create(entity);
-    }
-
     public List<Elector> findAll(Integer mesaId) {
         QElector _elector = QElector.elector;
         JPAQueryFactory factory = new JPAQueryFactory(em);
@@ -60,5 +42,50 @@ public class ElectorFacade extends AbstractFacade<Elector> {
 
         return query.fetch();
     }
-    
+
+    public void createWithValidations(Elector entity) throws SAException {
+        QElector _elector = QElector.elector;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        long countDPI = factory.selectFrom(_elector).where(_elector.dpi.eq(entity.getDpi().trim())).fetchCount();
+
+        if (countDPI > 0) {
+            throw new SAException("El DPI ya existe");
+        }
+
+        validateBirthday(entity.getFechaNacimiento());
+        this.create(entity);
+    }
+
+    public void editWithValidations(Integer idElector, Elector entity) throws SAException {
+        Elector oldEntity = findById(idElector);
+        if (!idElector.equals(oldEntity.getIdElector()) || !idElector.equals(entity.getIdElector())) {
+            throw new SAException("Error en los id de electores");
+        }
+
+        QElector _elector = QElector.elector;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        long countDPI = factory.selectFrom(_elector)
+                .where(
+                        _elector.dpi.eq(entity.getDpi()), //New value exist
+                        _elector.dpi.ne(oldEntity.getDpi()) //But is not the same
+                ).fetchCount();
+
+        if (countDPI > 0) {
+            throw new SAException("El DPI ya existe");
+        }
+
+        validateBirthday(entity.getFechaNacimiento());
+        this.edit(idElector, entity);
+    }
+
+    private void validateBirthday(Date birthday) throws SAException {
+        Calendar calBirthday = Calendar.getInstance();
+        calBirthday.setTime(birthday);
+        Calendar calLimit = Calendar.getInstance();
+        calLimit.add(Calendar.YEAR, -18);
+        if (calBirthday.after(calLimit)) {
+            throw new SAException("El elector debe ser mayor de edad");
+        }
+    }
+
 }

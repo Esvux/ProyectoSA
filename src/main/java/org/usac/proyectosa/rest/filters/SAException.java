@@ -13,14 +13,17 @@ public class SAException extends Exception implements Serializable {
     
     public SAException() {
         super();
+        httpStatus = Response.Status.BAD_REQUEST;
     }
     
     public SAException(String msg) {
         super(msg);
+        httpStatus = Response.Status.BAD_REQUEST;
     }
     
     public SAException(String msg, Exception e) {
         super(msg, e);
+        httpStatus = Response.Status.BAD_REQUEST;
     }
 
     public SAException(Response.Status httpStatus) {

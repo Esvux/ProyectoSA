@@ -58,7 +58,7 @@ public class ElectorEndpoint {
     @Path("/{id:[0-9]+}")
     public Response edit(@PathParam("id") Integer idElector, Elector elector)
             throws SAException {
-        electorService.edit(idElector, elector);
+        electorService.editWithValidations(idElector, elector);
         return Response.ok().build();
     }
 
