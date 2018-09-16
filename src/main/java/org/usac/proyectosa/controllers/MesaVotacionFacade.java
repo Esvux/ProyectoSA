@@ -68,7 +68,7 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
                                 _centro.idCentro,
                                 _centro.direccion,
                                 _mesa.numMesa,
-                                _elector.numPadron.substring(5).castToNum(Integer.class)
+                                _elector.numPadron
                         )
                 )
                 .where(

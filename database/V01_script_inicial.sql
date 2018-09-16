@@ -56,7 +56,7 @@ CREATE TABLE voto (
 CREATE TABLE elector (
                 id_elector INT NOT NULL,
                 dpi VARCHAR(20) NOT NULL,
-                num_padron VARCHAR(20) NOT NULL,
+                num_padron INT NOT NULL,
                 nombres VARCHAR(150) NOT NULL,
                 apellidos VARCHAR(150) NOT NULL,
                 fecha_nacimiento DATE NOT NULL,

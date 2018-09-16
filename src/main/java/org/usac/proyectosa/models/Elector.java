@@ -44,7 +44,7 @@ public class Elector implements Serializable {
     @Size(max = 20)
     @Column(name = "num_padron")
     @JsonView(View.Search.class)
-    private String numPadron;
+    private Integer numPadron;
     
     @NotNull
     @Size(max = 150)
@@ -103,11 +103,11 @@ public class Elector implements Serializable {
         this.dpi = dpi;
     }
 
-    public String getNumPadron() {
+    public Integer getNumPadron() {
         return numPadron;
     }
 
-    public void setNumPadron(String numPadron) {
+    public void setNumPadron(Integer numPadron) {
         this.numPadron = numPadron;
     }
 
