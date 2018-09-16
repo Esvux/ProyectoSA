@@ -6,4 +6,5 @@ package org.usac.proyectosa.rest;
  */
 public class View {
     public static class Search { }
+    public static class Consulta extends Search { }
 }

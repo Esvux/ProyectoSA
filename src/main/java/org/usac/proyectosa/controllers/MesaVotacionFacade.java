@@ -1,13 +1,23 @@
 package org.usac.proyectosa.controllers;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.constraints.NotNull;
+import org.usac.proyectosa.models.CentroVotacion;
+import org.usac.proyectosa.models.Departamento;
 import org.usac.proyectosa.models.MesaVotacion;
+import org.usac.proyectosa.models.Municipio;
+import org.usac.proyectosa.models.QCentroVotacion;
+import org.usac.proyectosa.models.QDepartamento;
+import org.usac.proyectosa.models.QElector;
 import org.usac.proyectosa.models.QMesaVotacion;
+import org.usac.proyectosa.models.QMunicipio;
+import org.usac.proyectosa.rest.responses.MesaResponse;
 
 /**
  *
@@ -38,6 +48,59 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         }
 
         return query.fetch();
+    }
+
+    public MesaResponse findByDPI(@NotNull String dpi) {
+        QDepartamento _departamento = QDepartamento.departamento;
+        QMunicipio _municipio = QMunicipio.municipio;
+        QCentroVotacion _centro = QCentroVotacion.centroVotacion;
+        QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
+        QElector _elector = QElector.elector;
+
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        JPAQuery<MesaResponse> query = factory
+                .from(_elector, _mesa, _centro, _municipio, _departamento)
+                .select(
+                        Projections.constructor(
+                                MesaResponse.class,
+                                _departamento.idDepartamento,
+                                _municipio.idMunicipio,
+                                _centro.idCentro,
+                                _centro.direccion,
+                                _mesa.numMesa,
+                                _elector.numPadron.substring(5).castToNum(Integer.class)
+                        )
+                )
+                .where(
+                        _elector.mesa.eq(_mesa),
+                        _mesa.centroVotacion.eq(_centro),
+                        _centro.municipio.eq(_municipio),
+                        _municipio.departamento.eq(_departamento),
+                        _elector.dpi.eq(dpi)
+                );
+
+        /*
+        MesaVotacion mesa = factory
+                .selectFrom(_mesa)
+                .where(_mesa.electores.any().dpi.eq(dpi))
+                .fetchFirst();
+        
+        CentroVotacion centro = factory
+                .selectFrom(_centro)
+                .where(_centro.mesasVotacion.contains(mesa))
+                .fetchFirst();
+
+        Municipio municipio = factory
+                .selectFrom(_municipio)
+                .where(_municipio.centrosVotacion.contains(centro))
+                .fetchFirst();
+        
+        Departamento departamento = factory
+                .selectFrom(_departamento)
+                .where(_departamento.municipios.contains(municipio))
+                .fetchFirst();
+         */
+        return query.fetchFirst();
     }
 
 }
