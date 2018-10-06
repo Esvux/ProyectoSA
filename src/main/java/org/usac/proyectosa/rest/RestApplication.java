@@ -27,6 +27,7 @@ public class RestApplication extends Application {
         resources.add(DepartamentoEndpoint.class);
         resources.add(MunicipioEndpoint.class);
         resources.add(ConsultasEndpoint.class);
+        resources.add(HelloEndpoint.class);
 
         //Configurations
         resources.add(JacksonFeature.class);
