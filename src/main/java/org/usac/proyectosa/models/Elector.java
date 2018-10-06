@@ -81,11 +81,19 @@ public class Elector implements Serializable {
     @JsonView(View.Search.class)
     private String extraDireccion;
     
+    @Column(name = "voto_emitido")
+    @JsonView(View.Search.class)
+    private Boolean votoEmitido;
+    
     @JoinColumn(name = "id_mesa", referencedColumnName = "id_mesa")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JsonBackReference("mesa-electores")
     private MesaVotacion mesa;
 
+    public Elector() {
+        this.votoEmitido = Boolean.FALSE;
+    }
+    
     public Integer getIdElector() {
         return idElector;
     }
@@ -158,6 +166,14 @@ public class Elector implements Serializable {
         this.extraDireccion = extraDireccion;
     }
 
+    public Boolean getVotoEmitido() {
+        return votoEmitido;
+    }
+
+    public void setVotoEmitido(Boolean votoEmitido) {
+        this.votoEmitido = votoEmitido;
+    }
+    
     public MesaVotacion getMesa() {
         return mesa;
     }

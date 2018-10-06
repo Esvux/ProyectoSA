@@ -43,6 +43,16 @@ public class ElectorFacade extends AbstractFacade<Elector> {
         return query.fetch();
     }
 
+    public Elector findByDPI(String dpi) {
+        QElector _elector = QElector.elector;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        Elector elector = factory
+                .selectFrom(_elector)
+                .where(_elector.dpi.eq(dpi.trim()))
+                .fetchFirst();
+        return elector;
+    }
+    
     public void createWithValidations(Elector entity) throws SAException {
         QElector _elector = QElector.elector;
         JPAQueryFactory factory = new JPAQueryFactory(em);

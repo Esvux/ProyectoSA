@@ -49,6 +49,17 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
 
         return query.fetch();
     }
+    
+    public MesaVotacion getByDPI(@NotNull String dpi) {
+        QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        MesaVotacion mesa = factory
+                .selectFrom(_mesa)
+                .where(_mesa.electores.any().dpi.eq(dpi.trim()))
+                .fetchOne();
+        return mesa;
+    }
+
 
     public MesaResponse findByDPI(@NotNull String dpi) {
         QDepartamento _departamento = QDepartamento.departamento;
