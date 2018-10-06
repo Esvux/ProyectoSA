@@ -63,6 +63,7 @@ CREATE TABLE elector (
                 genero VARCHAR(1) NOT NULL,
                 direccion VARCHAR(150) NOT NULL,
                 extra_direccion VARCHAR(150),
+                voto_emitido BOOLEAN DEFAULT FALSE,
                 id_mesa INT NOT NULL,
                 PRIMARY KEY (id_elector)
 );
