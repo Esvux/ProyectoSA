@@ -41,7 +41,6 @@ public class Elector implements Serializable {
     private String dpi;
     
     @NotNull
-    @Size(max = 20)
     @Column(name = "num_padron")
     @JsonView(View.Search.class)
     private Integer numPadron;
