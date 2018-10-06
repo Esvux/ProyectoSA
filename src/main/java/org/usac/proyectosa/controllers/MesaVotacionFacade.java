@@ -79,27 +79,6 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
                         _elector.dpi.eq(dpi)
                 );
 
-        /*
-        MesaVotacion mesa = factory
-                .selectFrom(_mesa)
-                .where(_mesa.electores.any().dpi.eq(dpi))
-                .fetchFirst();
-        
-        CentroVotacion centro = factory
-                .selectFrom(_centro)
-                .where(_centro.mesasVotacion.contains(mesa))
-                .fetchFirst();
-
-        Municipio municipio = factory
-                .selectFrom(_municipio)
-                .where(_municipio.centrosVotacion.contains(centro))
-                .fetchFirst();
-        
-        Departamento departamento = factory
-                .selectFrom(_departamento)
-                .where(_departamento.municipios.contains(municipio))
-                .fetchFirst();
-         */
         return query.fetchFirst();
     }
 
