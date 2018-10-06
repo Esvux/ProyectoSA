@@ -116,5 +116,13 @@ public class MesaVotacion implements Serializable {
     public void setCentroVotacion(CentroVotacion centroVotacion) {
         this.centroVotacion = centroVotacion;
     }
+    
+    public void increaseNulos() {
+        this.cantNulos++;
+    }
+
+    public void increaseBlancos() {
+        this.cantBlancos++;
+    }
 
 }
