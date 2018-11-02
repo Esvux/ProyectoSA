@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import org.usac.proyectosa.controllers.ElectorFacade;
 import org.usac.proyectosa.models.Elector;
 import org.usac.proyectosa.rest.filters.SAException;
+import org.usac.proyectosa.rest.filters.SAMultipleException;
 
 /**
  * REST Web Service
@@ -39,6 +40,13 @@ public class ElectorEndpoint {
         return Response.ok().build();
     }
 
+    @POST
+    @Path("/carga")
+    public Response massiveLoad(List<Elector> electores) throws SAException, SAMultipleException {
+        electorService.createMassivly(electores);
+        return Response.ok().build();
+    }
+    
     @GET
     @JsonView(View.Search.class)
     public Response listAll(@QueryParam("mesa") Integer idMesa) {

@@ -6,6 +6,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.usac.proyectosa.rest.filters.SAExceptionHandler;
+import org.usac.proyectosa.rest.filters.SAMultipleException;
 import org.usac.proyectosa.utils.JacksonConfig;
 
 /**
@@ -34,6 +35,7 @@ public class RestApplication extends Application {
         resources.add(JacksonFeature.class);
         resources.add(JacksonConfig.class);
         resources.add(SAExceptionHandler.class);
+        resources.add(SAMultipleException.class);
         return resources;
     }    
 

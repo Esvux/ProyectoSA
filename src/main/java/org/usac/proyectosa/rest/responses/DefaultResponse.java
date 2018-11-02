@@ -1,6 +1,7 @@
 package org.usac.proyectosa.rest.responses;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -27,6 +28,11 @@ public class DefaultResponse <T> implements Serializable {
     
     public static DefaultResponse getErrorResponse(String mensaje) {
         DefaultResponse<String> error = new DefaultResponse<>(mensaje, true);
+        return error;
+    }
+    
+    public static DefaultResponse getMultipleErrorResponse(List<String> mensaje) {
+        DefaultResponse<List<String>> error = new DefaultResponse<>("Múltiples errores", true, mensaje);
         return error;
     }
 
