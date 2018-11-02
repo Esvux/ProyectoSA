@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.usac.proyectosa.models.Elector;
@@ -23,6 +24,9 @@ public class ElectorFacade extends AbstractFacade<Elector> {
 
     @PersistenceContext(unitName = "elecciones_pu")
     private EntityManager em;
+    
+    @Inject
+    private MesaVotacionFacade mesasService;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -80,6 +84,11 @@ public class ElectorFacade extends AbstractFacade<Elector> {
 
         if (countDPI > 0) {
             throw new SAException(String.format("El DPI %s ya existe", dpi));
+        }
+        
+        Integer idMesa = entity.getIdMesa();
+        if (idMesa != null) {
+            entity.setMesa(mesasService.findById(idMesa));
         }
 
         validateBirthday(dpi, entity.getFechaNacimiento());

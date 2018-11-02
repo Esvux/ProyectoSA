@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.usac.proyectosa.rest.View;
@@ -89,6 +90,9 @@ public class Elector implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JsonBackReference("mesa-electores")
     private MesaVotacion mesa;
+    
+    @Transient
+    private Integer idMesa;
 
     public Elector() {
         this.votoEmitido = Boolean.FALSE;
@@ -180,6 +184,14 @@ public class Elector implements Serializable {
 
     public void setMesa(MesaVotacion mesa) {
         this.mesa = mesa;
+    }
+
+    public Integer getIdMesa() {
+        return idMesa;
+    }
+
+    public void setIdMesa(Integer idMesa) {
+        this.idMesa = idMesa;
     }
 
 }
