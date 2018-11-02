@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import org.usac.proyectosa.rest.View;
 
@@ -38,15 +39,19 @@ public class MesaVotacion implements Serializable {
     @JsonView(View.Search.class)
     private int numMesa;
     
-    @NotNull
     @Column(name = "cant_nulos")
     @JsonView(View.Search.class)
     private int cantNulos;
     
-    @NotNull
     @Column(name = "cant_blancos")
     @JsonView(View.Search.class)
     private int cantBlancos;
+    
+    @Column(name="rango_inicial")
+    private String rangoInicial;
+    
+    @Column(name="rango_final")
+    private String rangoFinal;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mesa", fetch = FetchType.LAZY)
     @JsonManagedReference("mesa-votos")
@@ -60,6 +65,9 @@ public class MesaVotacion implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JsonBackReference("centro-mesas")
     private CentroVotacion centroVotacion;
+    
+    @Transient
+    private Integer idMunicipio;
 
     public Integer getIdMesa() {
         return idMesa;
@@ -116,6 +124,22 @@ public class MesaVotacion implements Serializable {
     public void setCentroVotacion(CentroVotacion centroVotacion) {
         this.centroVotacion = centroVotacion;
     }
+
+    public String getRangoInicial() {
+        return rangoInicial;
+    }
+
+    public void setRangoInicial(String rangoInicial) {
+        this.rangoInicial = rangoInicial;
+    }
+
+    public String getRangoFinal() {
+        return rangoFinal;
+    }
+
+    public void setRangoFinal(String rangoFinal) {
+        this.rangoFinal = rangoFinal;
+    }
     
     public void increaseNulos() {
         this.cantNulos++;
@@ -125,4 +149,12 @@ public class MesaVotacion implements Serializable {
         this.cantBlancos++;
     }
 
+    public Integer getIdMunicipio() {
+        return idMunicipio;
+    }
+
+    public void setIdMunicipio(Integer idMunicipio) {
+        this.idMunicipio = idMunicipio;
+    }
+    
 }

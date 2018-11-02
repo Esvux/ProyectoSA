@@ -26,6 +26,11 @@ public class DefaultResponse <T> implements Serializable {
         this(mensaje, esError, null);
     }
     
+    public static DefaultResponse getStringResponse(String mensaje) {
+        DefaultResponse<String> response = new DefaultResponse<>(mensaje, false);
+        return response;
+    }
+    
     public static DefaultResponse getErrorResponse(String mensaje) {
         DefaultResponse<String> error = new DefaultResponse<>(mensaje, true);
         return error;

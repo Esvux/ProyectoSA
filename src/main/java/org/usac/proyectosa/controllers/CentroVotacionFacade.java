@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.usac.proyectosa.models.CentroVotacion;
 import org.usac.proyectosa.models.QCentroVotacion;
+import org.usac.proyectosa.rest.filters.SAException;
 
 /**
  *
@@ -32,12 +33,23 @@ public class CentroVotacionFacade extends AbstractFacade<CentroVotacion> {
         QCentroVotacion _centro = QCentroVotacion.centroVotacion;
         JPAQueryFactory factory = new JPAQueryFactory(em);
         JPAQuery<CentroVotacion> query = factory.selectFrom(_centro);
-
         if (muniId != null) {
             query.where(_centro.municipio.idMunicipio.eq(muniId));
         }
-
         return query.fetch();
+    }
+    
+    public CentroVotacion findByMunicipio(Integer muniId) throws SAException {
+        QCentroVotacion _centro = QCentroVotacion.centroVotacion;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        JPAQuery<CentroVotacion> query = factory.selectFrom(_centro);
+        if (muniId != null) {
+            query.where(_centro.municipio.idMunicipio.eq(muniId));
+        }
+        CentroVotacion centro = query.fetchFirst();
+        if(centro == null)
+            throw new SAException("No existe centro de votacion oficial para el municipio");
+        return centro;
     }
 
 }

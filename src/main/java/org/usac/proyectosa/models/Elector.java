@@ -87,7 +87,7 @@ public class Elector implements Serializable {
     private Boolean votoEmitido;
     
     @JoinColumn(name = "id_mesa", referencedColumnName = "id_mesa")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JsonBackReference("mesa-electores")
     private MesaVotacion mesa;
     

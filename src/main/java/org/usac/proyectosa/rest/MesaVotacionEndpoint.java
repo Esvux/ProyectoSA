@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import org.usac.proyectosa.controllers.MesaVotacionFacade;
 import org.usac.proyectosa.models.MesaVotacion;
 import org.usac.proyectosa.rest.filters.SAException;
+import org.usac.proyectosa.rest.filters.SAMultipleException;
+import org.usac.proyectosa.rest.responses.DefaultResponse;
 
 /**
  * REST Web Service
@@ -37,6 +39,15 @@ public class MesaVotacionEndpoint {
     public Response create(MesaVotacion mesa) {
         mesaVotacionService.create(mesa);
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/carga")
+    public Response createMassivly(List<MesaVotacion> mesas) throws SAException, SAMultipleException {
+        long records = mesaVotacionService.createMassivly(mesas);
+        return Response.ok(
+                DefaultResponse.getStringResponse(String.format("Se han creado %d mesas de votación", records))
+        ).build();
     }
 
     @GET

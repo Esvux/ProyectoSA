@@ -3,20 +3,22 @@ package org.usac.proyectosa.controllers;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
 import org.usac.proyectosa.models.CentroVotacion;
-import org.usac.proyectosa.models.Departamento;
 import org.usac.proyectosa.models.MesaVotacion;
-import org.usac.proyectosa.models.Municipio;
 import org.usac.proyectosa.models.QCentroVotacion;
 import org.usac.proyectosa.models.QDepartamento;
 import org.usac.proyectosa.models.QElector;
 import org.usac.proyectosa.models.QMesaVotacion;
 import org.usac.proyectosa.models.QMunicipio;
+import org.usac.proyectosa.rest.filters.SAException;
+import org.usac.proyectosa.rest.filters.SAMultipleException;
 import org.usac.proyectosa.rest.responses.MesaResponse;
 
 /**
@@ -29,6 +31,9 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
     @PersistenceContext(unitName = "elecciones_pu")
     private EntityManager em;
 
+    @Inject
+    private CentroVotacionFacade centroService;
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -37,6 +42,57 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
     public MesaVotacionFacade() {
         super(MesaVotacion.class);
     }
+
+    public long createMassivly(List<MesaVotacion> entities) throws SAException, SAMultipleException {
+        if (entities == null || entities.isEmpty()) {
+            throw new SAException("La lista de mesas no puede ser nula o vacía");
+        }
+        List<String> messages = new ArrayList<>();
+        long records = 0L;
+        for(MesaVotacion mesa : entities) {
+            try {
+                createWithValidations(mesa);
+                records++;
+            } catch(SAException e) {
+                messages.add(e.getMessage());
+            }
+        }
+        if (!messages.isEmpty()) {
+            throw new SAMultipleException(messages);
+        }
+        return records;
+    }
+    
+    public void createWithValidations(MesaVotacion entity) throws SAException {
+        QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        
+        Integer idMunicipio = entity.getIdMunicipio();
+        if (idMunicipio != null) {
+            CentroVotacion centroByMuniId = centroService.findByMunicipio(idMunicipio);
+            entity.setCentroVotacion(centroByMuniId);
+        }
+        
+        CentroVotacion centro = entity.getCentroVotacion();
+        if(centro == null) {
+            throw new SAException(String.format("La mesa número %d no tiene centro de votación asignado", entity.getNumMesa()));
+        }
+        
+        Integer numMesa = entity.getNumMesa();
+        long countMesa = factory
+                .selectFrom(_mesa)
+                .where(
+                        _mesa.numMesa.eq(numMesa),
+                        _mesa.centroVotacion.eq(entity.getCentroVotacion())
+                ).fetchCount();
+
+        if (countMesa > 0) {
+            throw new SAException(String.format("La mesa %d ya ha sido registrada en el centro de votacion %d", numMesa, centro.getIdCentro()));
+        }
+        
+        this.create(entity);
+    }
+
 
     public List<MesaVotacion> findAll(Integer centroId) {
         QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
@@ -49,7 +105,7 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
 
         return query.fetch();
     }
-    
+
     public MesaVotacion getByDPI(@NotNull String dpi) {
         QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
         JPAQueryFactory factory = new JPAQueryFactory(em);
@@ -59,7 +115,6 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
                 .fetchOne();
         return mesa;
     }
-
 
     public MesaResponse findByDPI(@NotNull String dpi) {
         QDepartamento _departamento = QDepartamento.departamento;

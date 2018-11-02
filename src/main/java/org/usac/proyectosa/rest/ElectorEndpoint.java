@@ -19,6 +19,7 @@ import org.usac.proyectosa.controllers.ElectorFacade;
 import org.usac.proyectosa.models.Elector;
 import org.usac.proyectosa.rest.filters.SAException;
 import org.usac.proyectosa.rest.filters.SAMultipleException;
+import org.usac.proyectosa.rest.responses.DefaultResponse;
 
 /**
  * REST Web Service
@@ -43,8 +44,10 @@ public class ElectorEndpoint {
     @POST
     @Path("/carga")
     public Response massiveLoad(List<Elector> electores) throws SAException, SAMultipleException {
-        electorService.createMassivly(electores);
-        return Response.ok().build();
+        long records = electorService.createMassivly(electores);
+        return Response.ok(
+                DefaultResponse.getStringResponse(String.format("Se han creado %d electores", records))
+        ).build();
     }
     
     @GET
