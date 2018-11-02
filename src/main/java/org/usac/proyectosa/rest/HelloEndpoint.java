@@ -19,7 +19,7 @@ public class HelloEndpoint {
     @Path("version")
     @Produces(MediaType.TEXT_PLAIN)
     public Response version() {
-        return Response.ok("Version 0.3.0").build();
+        return Response.ok("Version 0.3.1").build();
     }
     
 }
