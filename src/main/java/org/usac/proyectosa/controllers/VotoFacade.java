@@ -146,14 +146,20 @@ public class VotoFacade extends AbstractFacade<Voto> {
                 .groupBy(_partido.idPartido, _partido.nombre)
                 .fetch();
 
-        Long nulos = factory.select(_mesa.cantNulos.sum())
-                .from(_mesa).fetchOne().longValue();
-        Long blancos = factory.select(_mesa.cantBlancos.sum())
-                .from(_mesa).fetchOne().longValue();
+        Integer nulos = factory.select(_mesa.cantNulos.sum())
+                .from(_mesa).fetchOne();
+        if(nulos == null)
+            nulos = 0;
+        
+        Integer blancos = factory.select(_mesa.cantBlancos.sum())
+                .from(_mesa).fetchOne();
+        if(blancos == null)
+            blancos = 0;
+        
         Long total = factory.select(_elector.count())
                 .from(_elector).where(_elector.votoEmitido.isTrue()).fetchOne();
-        result.add(new ResultadoResponse(PartidoFacade.NULL_VOTE, "Nulos", nulos));
-        result.add(new ResultadoResponse(PartidoFacade.BLANK_VOTE, "Blancos", blancos));
+        result.add(new ResultadoResponse(PartidoFacade.NULL_VOTE, "Nulos", nulos.longValue()));
+        result.add(new ResultadoResponse(PartidoFacade.BLANK_VOTE, "Blancos", blancos.longValue()));
         result.add(new ResultadoResponse(-1, "Total", total));
         return result;
     }

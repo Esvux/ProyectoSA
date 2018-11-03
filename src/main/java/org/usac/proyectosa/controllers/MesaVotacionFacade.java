@@ -1,6 +1,7 @@
 package org.usac.proyectosa.controllers;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;
@@ -155,6 +156,16 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         if(mesa==null) {
             throw new SAException(String.format("El DPI '%s' no tiene asignada mesa de votación", dpi));
         }
+        return mesa;
+    }
+    
+    public MesaVotacion getByDPIESB(@NotNull String dpi) {
+        QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        MesaVotacion mesa = factory
+                .selectFrom(_mesa)
+                .where(Expressions.stringPath(dpi).between(_mesa.rangoInicial, _mesa.rangoFinal))
+                .fetchOne();
         return mesa;
     }
 

@@ -93,6 +93,11 @@ public class ElectorFacade extends AbstractFacade<Elector> {
         if (idMesa != null) {
             entity.setMesa(mesasService.findById(idMesa));
         }
+        
+        Integer idMunicipio = entity.getIdMunicipio();
+        if(idMunicipio != null) {
+            entity.setMesa(mesasService.getByDPIESB(dpi));
+        }
 
         validateBirthday(dpi, entity.getFechaNacimiento());
         this.create(entity);

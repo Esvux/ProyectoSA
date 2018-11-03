@@ -95,6 +95,9 @@ public class Elector implements Serializable {
     @Transient
     private Integer idMesa;
     
+    @Transient
+    private Integer idMunicipio;
+    
     private static final Calendar calendar = Calendar.getInstance();
     static {
         calendar.add(Calendar.YEAR, -19);
@@ -204,6 +207,14 @@ public class Elector implements Serializable {
 
     public void setIdMesa(Integer idMesa) {
         this.idMesa = idMesa;
+    }
+
+    public Integer getIdMunicipio() {
+        return idMunicipio;
+    }
+
+    public void setIdMunicipio(Integer idMunicipio) {
+        this.idMunicipio = idMunicipio;
     }
 
 }
