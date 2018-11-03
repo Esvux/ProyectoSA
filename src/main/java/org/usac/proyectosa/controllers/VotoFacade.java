@@ -154,7 +154,7 @@ public class VotoFacade extends AbstractFacade<Voto> {
                 .from(_elector).where(_elector.votoEmitido.isTrue()).fetchOne();
         result.add(new ResultadoResponse(PartidoFacade.NULL_VOTE, "Nulos", nulos));
         result.add(new ResultadoResponse(PartidoFacade.BLANK_VOTE, "Blancos", blancos));
-        result.add(new ResultadoResponse(null, "Total", total));
+        result.add(new ResultadoResponse(-1, "Total", total));
         return result;
     }
 
