@@ -1,6 +1,9 @@
 package org.usac.proyectosa.rest;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -19,6 +22,7 @@ import org.usac.proyectosa.rest.requests.SingleVoteRequest;
 import org.usac.proyectosa.rest.requests.SingleVoteRequestESB;
 import org.usac.proyectosa.rest.responses.DefaultResponse;
 import org.usac.proyectosa.rest.responses.ResultadoResponse;
+import org.usac.proyectosa.rest.responses.ResultadoResponseESB;
 
 /**
  *
@@ -66,7 +70,10 @@ public class VotosEndpoint {
     @GET
     @Path("/ESB/resultados")
     public Response ESBobtainResults() {
-        List<ResultadoResponse> results = votosService.getResults();
+        List<ResultadoResponseESB> results = votosService.getResults()
+                .stream()
+                .map(ResultadoResponseESB::new)
+                .collect(Collectors.toList());
         return Response.ok(
                 new DefaultResponse<>("Resultados al momento", false, results)
         ).build();
