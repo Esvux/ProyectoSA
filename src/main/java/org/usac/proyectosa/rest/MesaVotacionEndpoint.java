@@ -43,8 +43,8 @@ public class MesaVotacionEndpoint {
 
     @POST
     @Path("/carga")
-    public Response createMassivly(List<MesaVotacion> mesas) throws SAException, SAMultipleException {
-        long records = mesaVotacionService.createMassivly(mesas);
+    public Response massiveLoading(List<MesaVotacion> mesas) throws SAException, SAMultipleException {
+        long records = mesaVotacionService.createMassively(mesas);
         return Response.ok(
                 DefaultResponse.getStringResponse(String.format("Se han creado %d mesas de votación", records))
         ).build();

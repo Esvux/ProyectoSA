@@ -59,7 +59,7 @@ public class ElectorFacade extends AbstractFacade<Elector> {
         return elector;
     }
 
-    public long createMassivly(List<Elector> entities) throws SAException, SAMultipleException {
+    public long createMassively(List<Elector> entities) throws SAException, SAMultipleException {
         if (entities == null || entities.isEmpty()) {
             throw new SAException("La lista de personas no puede ser nula o vacía");
         }

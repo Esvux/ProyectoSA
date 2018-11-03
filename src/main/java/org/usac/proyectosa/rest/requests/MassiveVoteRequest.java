@@ -6,13 +6,13 @@ import javax.validation.constraints.NotNull;
  *
  * @author esvux
  */
-public class EmitirVotoRequest {
+public class MassiveVoteRequest {
     
     @NotNull
     private String dpi;
     
     @NotNull
-    private String partido;
+    private Integer partido;
 
     public String getDpi() {
         return dpi;
@@ -22,12 +22,12 @@ public class EmitirVotoRequest {
         this.dpi = dpi;
     }
 
-    public String getPartido() {
+    public Integer getPartido() {
         return partido;
     }
 
-    public void setPartido(String partido) {
+    public void setPartido(Integer partido) {
         this.partido = partido;
     }
-    
+
 }

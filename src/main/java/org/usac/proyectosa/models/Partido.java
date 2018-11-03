@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -41,6 +42,13 @@ public class Partido implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido", fetch = FetchType.LAZY)
     @JsonManagedReference("partido-votos")
     private Set<Voto> votos;
+    
+    @Transient
+    private Boolean isBlank;
+
+    public Partido() {
+        isBlank = Boolean.FALSE;
+    }
 
     public Integer getIdPartido() {
         return idPartido;
@@ -72,6 +80,14 @@ public class Partido implements Serializable {
 
     public void setVotos(Set<Voto> votos) {
         this.votos = votos;
+    }
+
+    public Boolean getIsBlank() {
+        return isBlank;
+    }
+
+    public void setIsBlank(Boolean isBlank) {
+        this.isBlank = isBlank;
     }
     
 }

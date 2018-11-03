@@ -43,8 +43,8 @@ public class ElectorEndpoint {
 
     @POST
     @Path("/carga")
-    public Response massiveLoad(List<Elector> electores) throws SAException, SAMultipleException {
-        long records = electorService.createMassivly(electores);
+    public Response massiveLoading(List<Elector> electores) throws SAException, SAMultipleException {
+        long records = electorService.createMassively(electores);
         return Response.ok(
                 DefaultResponse.getStringResponse(String.format("Se han creado %d electores", records))
         ).build();

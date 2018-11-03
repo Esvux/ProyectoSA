@@ -1,11 +1,13 @@
 package org.usac.proyectosa.controllers;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.usac.proyectosa.models.Partido;
 import org.usac.proyectosa.models.QPartido;
+import org.usac.proyectosa.rest.filters.SAException;
 
 /**
  *
@@ -25,8 +27,8 @@ public class PartidoFacade extends AbstractFacade<Partido> {
     public PartidoFacade() {
         super(Partido.class);
     }
-    
-   public Partido findByName(String nombre) {
+
+    public Partido findByName(String nombre) {
         QPartido _partido = QPartido.partido;
         JPAQueryFactory factory = new JPAQueryFactory(em);
         Partido partido = factory
@@ -36,5 +38,26 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         return partido;
     }
 
-    
+    public Partido findByIdWithNullAndBlank(Integer code) {
+        if (Objects.equals(code, NULL_VOTE)) {
+            return null;
+        }
+        if (Objects.equals(code, BLANK_VOTE)) {
+            Partido partido = new Partido();
+            partido.setIsBlank(Boolean.TRUE);
+            return partido;
+        }
+        Partido partido;
+        try {
+            partido = findById(code);
+        } catch (SAException ex) {
+            ex.printStackTrace();
+            partido = null;
+        }
+        return partido;
+    }
+
+    private static final Integer NULL_VOTE = 7;
+    private static final Integer BLANK_VOTE = 6;
+
 }

@@ -2,15 +2,13 @@ package org.usac.proyectosa.controllers;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.core.Response;
 import org.usac.proyectosa.models.Elector;
 import org.usac.proyectosa.models.MesaVotacion;
 import org.usac.proyectosa.models.Partido;
@@ -20,7 +18,9 @@ import org.usac.proyectosa.models.QPartido;
 import org.usac.proyectosa.models.QVoto;
 import org.usac.proyectosa.models.Voto;
 import org.usac.proyectosa.rest.filters.SAException;
-import org.usac.proyectosa.rest.requests.EmitirVotoRequest;
+import org.usac.proyectosa.rest.filters.SAMultipleException;
+import org.usac.proyectosa.rest.requests.SingleVoteRequest;
+import org.usac.proyectosa.rest.requests.MassiveVoteRequest;
 import org.usac.proyectosa.rest.responses.ResultadoResponse;
 
 /**
@@ -51,16 +51,40 @@ public class VotoFacade extends AbstractFacade<Voto> {
         super(Voto.class);
     }
 
-    public void emitirVoto(EmitirVotoRequest request) throws SAException {
-        Elector elector = electorService.findByDPI(request.getDpi());
+    public long createMassively(List<MassiveVoteRequest> entities) throws SAException, SAMultipleException {
+        if (entities == null || entities.isEmpty()) {
+            throw new SAException("La lista de votos no puede ser nula o vacía");
+        }
+        List<String> messages = new ArrayList<>();
+        long records = 0L;
+        for (MassiveVoteRequest voto : entities) {
+            try {
+                issueVote(voto.getDpi(), null, voto.getPartido());
+                records++;
+            } catch (SAException e) {
+                messages.add(e.getMessage());
+            }
+        }
+        if (!messages.isEmpty()) {
+            throw new SAMultipleException(messages);
+        }
+        return records;
+    }
+
+    public void issueVote(SingleVoteRequest vote) throws SAException {
+        issueVote(vote.getDpi(), vote.getPartido(), null);
+    }
+
+    private void issueVote(String dpi, String nombrePartido, Integer idPartido) throws SAException {
+        Elector elector = electorService.findByDPI(dpi);
         if (elector == null) {
             throw new SAException("Imposible emitir voto, el elector no existe");
         }
         if (elector.getVotoEmitido()) {
-            throw new SAException("Imposible emitir voto, el elector ya voto");
+            throw new SAException(String.format("El elector %s ya votó", dpi));
         }
 
-        MesaVotacion mesa = mesaVotacionService.getByDPI(request.getDpi());
+        MesaVotacion mesa = mesaVotacionService.getByDPI(dpi);
         if (mesa == null) {
             throw new SAException("Imposible emitir voto, mesa de votacion no registrada");
         }
@@ -68,23 +92,23 @@ public class VotoFacade extends AbstractFacade<Voto> {
         elector.setVotoEmitido(Boolean.TRUE);
         electorService.edit(elector.getIdElector(), elector);
 
-        String partidoStr = request.getPartido();
-
-        if (partidoStr == null) {
-            mesa.increaseNulos();
-            mesaVotacionService.edit(mesa.getIdMesa(), mesa);
-            return;
+        Partido partido = null;
+        if (nombrePartido != null) {
+            partido = partidoService.findByName(nombrePartido);
         }
 
-        if (partidoStr.isEmpty()) {
-            mesa.increaseBlancos();
-            mesaVotacionService.edit(mesa.getIdMesa(), mesa);
-            return;
+        if (idPartido != null) {
+            partido = partidoService.findByIdWithNullAndBlank(idPartido);
         }
 
-        Partido partido = partidoService.findByName(request.getPartido());
         if (partido == null) {
             mesa.increaseNulos();
+            mesaVotacionService.edit(mesa.getIdMesa(), mesa);
+            return;
+        }
+
+        if (partido.getIsBlank()) {
+            mesa.increaseBlancos();
             mesaVotacionService.edit(mesa.getIdMesa(), mesa);
             return;
         }
@@ -100,23 +124,22 @@ public class VotoFacade extends AbstractFacade<Voto> {
         QPartido _partido = QPartido.partido;
         QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
         QElector _elector = QElector.elector;
-        
+
         JPAQueryFactory factory = new JPAQueryFactory(em);
         List<ResultadoResponse> result = factory.select(
-                        Projections.constructor(
-                                ResultadoResponse.class,
-                                _partido.nombre
-                                ,new CaseBuilder()
-                                        .when(_voto.idVoto.count().isNotNull())
-                                        .then(_voto.idVoto.count())
-                                        .otherwise(0L)
-                        )
+                Projections.constructor(
+                        ResultadoResponse.class,
+                        _partido.nombre, new CaseBuilder()
+                        .when(_voto.idVoto.count().isNotNull())
+                        .then(_voto.idVoto.count())
+                        .otherwise(0L)
                 )
+        )
                 .from(_partido)
                 .leftJoin(_voto).on(_voto.partido.eq(_partido))
                 .groupBy(_partido.nombre)
                 .fetch();
-        
+
         Long nulos = factory.select(_mesa.cantNulos.sum())
                 .from(_mesa).fetchOne().longValue();
         Long blancos = factory.select(_mesa.cantBlancos.sum())

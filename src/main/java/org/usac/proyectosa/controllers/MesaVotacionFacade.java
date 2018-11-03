@@ -43,7 +43,7 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         super(MesaVotacion.class);
     }
 
-    public long createMassivly(List<MesaVotacion> entities) throws SAException, SAMultipleException {
+    public long createMassively(List<MesaVotacion> entities) throws SAException, SAMultipleException {
         if (entities == null || entities.isEmpty()) {
             throw new SAException("La lista de mesas no puede ser nula o vacía");
         }
