@@ -143,7 +143,7 @@ public class VotoFacade extends AbstractFacade<Voto> {
         )
                 .from(_partido)
                 .leftJoin(_voto).on(_voto.partido.eq(_partido))
-                .groupBy(_partido.nombre)
+                .groupBy(_partido.idPartido, _partido.nombre)
                 .fetch();
 
         Long nulos = factory.select(_mesa.cantNulos.sum())
