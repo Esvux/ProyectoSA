@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -93,9 +94,20 @@ public class Elector implements Serializable {
     
     @Transient
     private Integer idMesa;
+    
+    private static final Calendar calendar = Calendar.getInstance();
+    static {
+        calendar.add(Calendar.YEAR, -19);
+    }
 
     public Elector() {
         this.votoEmitido = Boolean.FALSE;
+        this.nombres = "";
+        this.apellidos = "";
+        this.fechaNacimiento = calendar.getTime();
+        this.direccion = "";
+        this.extraDireccion = "";
+        this.numPadron = (int)(23451290 * Math.random()) + 100_000_000;
     }
     
     public Integer getIdElector() {
