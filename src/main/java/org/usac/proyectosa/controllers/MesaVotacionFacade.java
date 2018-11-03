@@ -164,7 +164,7 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         JPAQueryFactory factory = new JPAQueryFactory(em);
         MesaVotacion mesa = factory
                 .selectFrom(_mesa)
-                .where(Expressions.stringPath(dpi).between(_mesa.rangoInicial, _mesa.rangoFinal))
+                .where(_mesa.rangoInicial.lt(dpi), _mesa.rangoFinal.gt(dpi))
                 .fetchFirst();
         return mesa;
     }
