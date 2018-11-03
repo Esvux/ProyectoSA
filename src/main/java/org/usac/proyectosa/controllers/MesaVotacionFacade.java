@@ -165,7 +165,7 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         MesaVotacion mesa = factory
                 .selectFrom(_mesa)
                 .where(Expressions.stringPath(dpi).between(_mesa.rangoInicial, _mesa.rangoFinal))
-                .fetchOne();
+                .fetchFirst();
         return mesa;
     }
 
