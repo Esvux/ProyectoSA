@@ -6,10 +6,12 @@ package org.usac.proyectosa.rest.responses;
  */
 public class ResultadoResponse {
     
+    private Integer idPartido;
     private String nombre;
     private Long cantidad;
 
-    public ResultadoResponse(String nombre, Long cantidad) {
+    public ResultadoResponse(Integer idPartido, String nombre, Long cantidad) {
+        this.idPartido = idPartido;
         this.nombre = nombre;
         this.cantidad = cantidad;
     }
@@ -31,6 +33,14 @@ public class ResultadoResponse {
 
     public void setCantidad(Long cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Integer getIdPartido() {
+        return idPartido;
+    }
+
+    public void setIdPartido(Integer idPartido) {
+        this.idPartido = idPartido;
     }
     
 }

@@ -133,10 +133,12 @@ public class VotoFacade extends AbstractFacade<Voto> {
         List<ResultadoResponse> result = factory.select(
                 Projections.constructor(
                         ResultadoResponse.class,
-                        _partido.nombre, new CaseBuilder()
-                        .when(_voto.idVoto.count().isNotNull())
-                        .then(_voto.idVoto.count())
-                        .otherwise(0L)
+                        _partido.idPartido,
+                        _partido.nombre, 
+                        new CaseBuilder()
+                            .when(_voto.idVoto.count().isNotNull())
+                            .then(_voto.idVoto.count())
+                            .otherwise(0L)
                 )
         )
                 .from(_partido)
@@ -150,9 +152,9 @@ public class VotoFacade extends AbstractFacade<Voto> {
                 .from(_mesa).fetchOne().longValue();
         Long total = factory.select(_elector.count())
                 .from(_elector).where(_elector.votoEmitido.isTrue()).fetchOne();
-        result.add(new ResultadoResponse("Nulos", nulos));
-        result.add(new ResultadoResponse("Blancos", blancos));
-        result.add(new ResultadoResponse("Total", total));
+        result.add(new ResultadoResponse(PartidoFacade.NULL_VOTE, "Nulos", nulos));
+        result.add(new ResultadoResponse(PartidoFacade.BLANK_VOTE, "Blancos", blancos));
+        result.add(new ResultadoResponse(null, "Total", total));
         return result;
     }
 

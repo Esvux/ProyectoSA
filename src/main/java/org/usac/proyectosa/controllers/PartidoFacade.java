@@ -57,7 +57,7 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         return partido;
     }
 
-    private static final Integer NULL_VOTE = 7;
-    private static final Integer BLANK_VOTE = 6;
+    public static final Integer NULL_VOTE = 7;
+    public static final Integer BLANK_VOTE = 6;
 
 }
