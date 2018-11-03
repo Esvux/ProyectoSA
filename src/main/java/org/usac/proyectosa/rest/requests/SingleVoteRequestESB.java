@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author esvux
  */
-public class MassiveVoteRequest {
+public class SingleVoteRequestESB {
     
     @NotNull
     private String dpi;
@@ -29,5 +29,5 @@ public class MassiveVoteRequest {
     public void setPartido(Integer partido) {
         this.partido = partido;
     }
-
+    
 }

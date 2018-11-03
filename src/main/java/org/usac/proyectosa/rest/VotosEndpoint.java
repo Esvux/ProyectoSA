@@ -16,7 +16,7 @@ import org.usac.proyectosa.controllers.VotoFacade;
 import org.usac.proyectosa.rest.filters.SAException;
 import org.usac.proyectosa.rest.filters.SAMultipleException;
 import org.usac.proyectosa.rest.requests.SingleVoteRequest;
-import org.usac.proyectosa.rest.requests.MassiveVoteRequest;
+import org.usac.proyectosa.rest.requests.SingleVoteRequestESB;
 import org.usac.proyectosa.rest.responses.DefaultResponse;
 import org.usac.proyectosa.rest.responses.ResultadoResponse;
 
@@ -41,8 +41,15 @@ public class VotosEndpoint {
     }
     
     @POST
+    @Path("ESB/emitir-voto")
+    public Response ESBregister(@Valid SingleVoteRequestESB vote) throws SAException {
+        votosService.issueVote(vote);
+        return Response.ok(new DefaultResponse<>("Voto emitido correctamente", false)).build();
+    }
+    
+    @POST
     @Path("carga")
-    public Response massiveLoading(@Valid List<MassiveVoteRequest> votes) throws SAException, SAMultipleException {
+    public Response massiveLoading(@Valid List<SingleVoteRequestESB> votes) throws SAException, SAMultipleException {
         long records = votosService.createMassively(votes);
         return Response.ok(
                 DefaultResponse.getStringResponse(String.format("Se registraron correctamente %d votos", records))

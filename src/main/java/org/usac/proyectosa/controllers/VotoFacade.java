@@ -20,7 +20,7 @@ import org.usac.proyectosa.models.Voto;
 import org.usac.proyectosa.rest.filters.SAException;
 import org.usac.proyectosa.rest.filters.SAMultipleException;
 import org.usac.proyectosa.rest.requests.SingleVoteRequest;
-import org.usac.proyectosa.rest.requests.MassiveVoteRequest;
+import org.usac.proyectosa.rest.requests.SingleVoteRequestESB;
 import org.usac.proyectosa.rest.responses.ResultadoResponse;
 
 /**
@@ -51,15 +51,15 @@ public class VotoFacade extends AbstractFacade<Voto> {
         super(Voto.class);
     }
 
-    public long createMassively(List<MassiveVoteRequest> entities) throws SAException, SAMultipleException {
+    public long createMassively(List<SingleVoteRequestESB> entities) throws SAException, SAMultipleException {
         if (entities == null || entities.isEmpty()) {
             throw new SAException("La lista de votos no puede ser nula o vacía");
         }
         List<String> messages = new ArrayList<>();
         long records = 0L;
-        for (MassiveVoteRequest voto : entities) {
+        for (SingleVoteRequestESB voto : entities) {
             try {
-                issueVote(voto.getDpi(), null, voto.getPartido());
+                issueVote(voto);
                 records++;
             } catch (SAException e) {
                 messages.add(e.getMessage());
@@ -75,6 +75,10 @@ public class VotoFacade extends AbstractFacade<Voto> {
         issueVote(vote.getDpi(), vote.getPartido(), null);
     }
 
+    public void issueVote(SingleVoteRequestESB vote) throws SAException {
+        issueVote(vote.getDpi(), null, vote.getPartido());
+    }
+    
     private void issueVote(String dpi, String nombrePartido, Integer idPartido) throws SAException {
         Elector elector = electorService.findByDPI(dpi);
         if (elector == null) {
