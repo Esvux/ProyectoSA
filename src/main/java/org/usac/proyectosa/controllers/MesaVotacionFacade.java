@@ -169,4 +169,14 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         return mesa;
     }
 
+    public MesaVotacion getByMunicipio(@NotNull Integer idMunicipio) {
+        QMesaVotacion _mesa = QMesaVotacion.mesaVotacion;
+        JPAQueryFactory factory = new JPAQueryFactory(em);
+        MesaVotacion mesa = factory
+                .selectFrom(_mesa)
+                .where(_mesa.centroVotacion.municipio.idMunicipio.eq(idMunicipio))
+                .fetchFirst();
+        return mesa;
+    }
+
 }
