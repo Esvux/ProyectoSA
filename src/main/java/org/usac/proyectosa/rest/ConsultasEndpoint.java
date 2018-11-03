@@ -1,6 +1,5 @@
 package org.usac.proyectosa.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
