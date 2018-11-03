@@ -86,7 +86,7 @@ public class ElectorFacade extends AbstractFacade<Elector> {
         long countDPI = factory.selectFrom(_elector).where(_elector.dpi.eq(dpi)).fetchCount();
 
         if (countDPI > 0) {
-            throw new SAException(String.format("El DPI %s ya existe", dpi));
+            throw new SAException(String.format("El DPI '%s' ya existe", dpi));
         }
         
         Integer idMesa = entity.getIdMesa();
@@ -113,7 +113,7 @@ public class ElectorFacade extends AbstractFacade<Elector> {
                 ).fetchCount();
 
         if (countDPI > 0) {
-            throw new SAException(String.format("El DPI %s ya existe", dpi));
+            throw new SAException(String.format("El DPI '%s' ya existe", dpi));
         }
 
         validateBirthday(dpi, entity.getFechaNacimiento());
@@ -126,7 +126,7 @@ public class ElectorFacade extends AbstractFacade<Elector> {
         Calendar calLimit = Calendar.getInstance();
         calLimit.add(Calendar.YEAR, -18);
         if (calBirthday.after(calLimit)) {
-            throw new SAException(String.format("El elector con DPI %s debe ser mayor de edad", dpi));
+            throw new SAException(String.format("El elector con DPI '%s' debe ser mayor de edad", dpi));
         }
     }
 

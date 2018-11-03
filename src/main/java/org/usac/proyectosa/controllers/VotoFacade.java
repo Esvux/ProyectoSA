@@ -81,7 +81,7 @@ public class VotoFacade extends AbstractFacade<Voto> {
             throw new SAException("Imposible emitir voto, el elector no existe");
         }
         if (elector.getVotoEmitido()) {
-            throw new SAException(String.format("El elector %s ya votó", dpi));
+            throw new SAException(String.format("El elector '%s' ya votó", dpi));
         }
 
         MesaVotacion mesa = mesaVotacionService.getByDPI(dpi);
