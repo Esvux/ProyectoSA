@@ -116,7 +116,10 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
         return mesa;
     }
 
-    public MesaResponse findByDPI(@NotNull String dpi) {
+    public MesaResponse findByDPI(String dpi) throws SAException {
+        if(dpi==null) {
+            throw new SAException("El DPI no puede ser nulo en la consulta de mesa");
+        }
         QDepartamento _departamento = QDepartamento.departamento;
         QMunicipio _municipio = QMunicipio.municipio;
         QCentroVotacion _centro = QCentroVotacion.centroVotacion;
@@ -148,7 +151,11 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
                         _elector.dpi.eq(dpi)
                 );
 
-        return query.fetchFirst();
+        MesaResponse mesa = query.fetchFirst();
+        if(mesa==null) {
+            throw new SAException(String.format("El DPI '%s' no tiene asignada mesa de votación", dpi));
+        }
+        return mesa;
     }
 
 }
