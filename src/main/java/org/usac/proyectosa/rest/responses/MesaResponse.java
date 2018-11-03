@@ -14,17 +14,29 @@ public class MesaResponse implements Serializable {
     private String direccion;
     private Integer numMesa;
     private Integer numLinea;
+    private String resume;
 
     public MesaResponse() {
     }
 
-    public MesaResponse(Integer codDepartamento, Integer codMunicipio, Integer codCentroVotacion, String direccion, Integer numMesa, Integer numLinea) {
+    public MesaResponse(
+            Integer codDepartamento,
+            String departamento,
+            Integer codMunicipio,
+            String municipio,
+            Integer codCentroVotacion,
+            String centroVotacion,
+            String direccion,
+            Integer numMesa,
+            Integer numLinea
+    ) {
         this.codDepartamento = codDepartamento;
         this.codMunicipio = codMunicipio;
         this.codCentroVotacion = codCentroVotacion;
         this.direccion = direccion;
         this.numMesa = numMesa;
         this.numLinea = numLinea;
+        this.resume = String.format("Lugar de votación: %s, %s, %s. Ubicado en %s", departamento, municipio, centroVotacion, this.direccion);
     }
 
     public Integer getCodDepartamento() {
@@ -73,6 +85,11 @@ public class MesaResponse implements Serializable {
 
     public void setNumLinea(Integer numLinea) {
         this.numLinea = numLinea;
+    }
+    
+    @Override
+    public String toString() {
+        return this.resume;
     }
 
 }

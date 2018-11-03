@@ -130,8 +130,11 @@ public class MesaVotacionFacade extends AbstractFacade<MesaVotacion> {
                         Projections.constructor(
                                 MesaResponse.class,
                                 _departamento.idDepartamento,
+                                _departamento.nombre,
                                 _municipio.idMunicipio,
+                                _municipio.nombre,
                                 _centro.idCentro,
+                                _centro.nombre,
                                 _centro.direccion,
                                 _mesa.numMesa,
                                 _elector.numPadron

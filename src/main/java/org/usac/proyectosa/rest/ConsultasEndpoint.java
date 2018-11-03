@@ -11,6 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.usac.proyectosa.controllers.MesaVotacionFacade;
+import org.usac.proyectosa.rest.responses.DefaultResponse;
 import org.usac.proyectosa.rest.responses.MesaResponse;
 
 /**
@@ -34,4 +35,12 @@ public class ConsultasEndpoint {
         return Response.ok(mesa).build();
     }
     
+        @GET
+    @Path("/ESB/mesa")
+    public Response ESBfindMesaByDPI(@QueryParam("dpi") String DPI) {
+        MesaResponse mesa = mesaVotacionService.findByDPI(DPI);
+        DefaultResponse<MesaResponse> response = new DefaultResponse<>(mesa.toString(), false, mesa);
+        return Response.ok(response).build();
+    }
+
 }

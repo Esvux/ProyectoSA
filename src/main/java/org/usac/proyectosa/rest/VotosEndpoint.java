@@ -55,5 +55,15 @@ public class VotosEndpoint {
         List<ResultadoResponse> results = votosService.getResults();
         return Response.ok(results).build();
     }
+
+    @GET
+    @Path("/ESB/resultados")
+    public Response ESBobtainResults() {
+        List<ResultadoResponse> results = votosService.getResults();
+        return Response.ok(
+                new DefaultResponse<>("Resultados al momento", false, results)
+        ).build();
+    }
+
     
 }
